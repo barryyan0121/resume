@@ -2,25 +2,25 @@
 ## Abstract
 The project uses `Spacy` to extract company names and dates
 in different formats of resumes (in this case **.pdfs** and **.docx**) 
-without additional trainings. It uses the basic model from Spacy without
+without additional trainings. It uses the basic model from `Spacy` without
 tuning, so the accuracy is not satisfying. However, it shows an elementary
 approach in natural language processing.
 ## Introduction
-This is my first approach to NLP, and this project gives me an overview
+This is my first approach to `NLP`, and this project gives me an overview
 of the industry. With a list of resumes written in different formats,
 what would the most effective approach to extract the company titles,
 and the corresponding dates? This is different from Named-entity recognition
 in normal texts, as company names do not appear in complete sentences.
 The basic model of `Spacy` is a multi-task CNN trained on OntoNotes with
-blogs, news, and comments with an NER accuracy of 85%. Since the model
-is for general purpose, it might not perform well for NER tasks for resumes.
-In fact, when I tested it on an example resume, I see a lot of NER falsely
+blogs, news, and comments with an `NER` accuracy of 85%. Since the model
+is for general purpose, it might not perform well for `NER` tasks for resumes.
+In fact, when I tested it on an example resume, I see a lot of `NER` falsely
 classified. It is then critical to improve on the results without access
 to large number of training samples.
 ## Method
-I set up PyCharm as my IDE and Conda as Python Interpreter because I could
+I set up `PyCharm` as my IDE and `Conda` as Python Interpreter because I could
 not install numpy with wheel in virtualenv environment with M1 chip. I
-used Python 3.8, and you can build the dependency as follows.
+used `Python 3.8`, and you can build the dependency as follows.
 ```
 pip3 install -r requirements.txt
 ```
@@ -63,9 +63,9 @@ company names efficiently. The first thing came to my mind was to
 extract bold texts, since we would highlight the company names for
 the most times. However, when I checked in the resumes, many of them
 did not bold company names, so I had to find another approach. I then
-realized that all resumes have a section titled "Work Experience", either
+realized that all resumes have a section titled `"Work Experience"`, either
 in upper cases or in lower cases. So I searched the strings for the keyword
-"Experience" or "EXPERIENCE", and extracted the following strings. In
+`"Experience"` or `"EXPERIENCE"`, and extracted the following strings. In
 this way, if the NER recognized company names in the education or skills
 section, we would be able to ignore them safely without doing additional
 works.
@@ -82,7 +82,7 @@ works.
         else:
             print("EXPERIENCE not found either in " + filename + ", move to next resume")
 ```
-I then moved to NER part. After reading several articles, I decided to use
+I then moved to `NER` part. After reading several articles, I decided to use
 `Spacy` instead of `NLTK`. `NLTK` is essentially a string processing library, where
 each function takes strings as I/O. For a beginner, I think that `Spacy`'s
 object-oriented approach seems more friendly. 
@@ -98,7 +98,7 @@ patterns = [
 ruler.add_patterns(patterns)
 nlp.add_pipe(ruler, before='ner')
 ```
-Here I used the largest pretrained model of English in Spacy(742 MB), because
+Here I used the largest pretrained model of English in `Spacy`(742 MB), because
 it recognized more entities than the other two smaller models. I then used
 the `EntityRuler` to provide some patterns for the nlp object to match. In
 this case, `present/current/now` can represent working time, so we add them
@@ -150,15 +150,16 @@ So it seemed to work the best to just check the next entity instead of checking
 the next `DATE` and calculating its relative position.
 ## Results & Discussion
 I wrote the outputs to a text file with each of the file names, the
-company names within the resume, and the corresponding dates. Some
+company names (`ORG`) within the resume, and the corresponding dates(`DATE`). Some
 resumes seem to have better performance than others, and some are doing
 poorly with nonsense outputs. I assume that part of the reason that the
 program outputs more false company names is because I used a large pretrained
 model without tuning. If I switched to the smallest network, I got significantly
 fewer outputs, but it also gave away some correct results. I finally decided
 to use the medium size, since it gave the most correct results. <br><br>
-The results are in [`output.txt`](), and the source code is in [`main.py`](). With
-such method of filtering, I was able to pull up company names and time ranges.
+The results are in [`output.txt`](https://github.com/barryyan0121/resume/blob/master/output.txt), 
+and the source code is in [`main.py`](https://github.com/barryyan0121/resume/blob/master/main.py). 
+With such method of filtering, I was able to pull up company names and time ranges.
 However, many of my outputs include false company names, which either belong to
 other sections of the resumes, or are job titles/technology terms. I think that
 if I use enough training data, the results will be improved significantly.
