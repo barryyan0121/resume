@@ -157,8 +157,9 @@ program outputs more false company names is because I used a large pretrained
 model without tuning. If I switched to the smallest network, I got significantly
 fewer outputs, but it also gave away some correct results. I finally decided
 to use the medium size, since it gave the most correct results. <br><br>
-The results are in [`output.txt`](), and the source code is in [`main.py`](). With
-such method of filtering, I was able to pull up company names and time ranges.
+The results are in [`output.txt`](https://github.com/barryyan0121/resume/blob/master/output.txt), 
+and the source code is in [`main.py`](https://github.com/barryyan0121/resume/blob/master/main.py). 
+With such method of filtering, I was able to pull up company names and time ranges.
 However, many of my outputs include false company names, which either belong to
 other sections of the resumes, or are job titles/technology terms. I think that
 if I use enough training data, the results will be improved significantly.
